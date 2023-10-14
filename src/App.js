@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from "react";
+import { Route, Routes } from "react-router-dom";
+import Loader from "./components/Loader";
+import "./App.css";
+const HomeLoad = lazy(() => import("./pages/HomePage"));
+const ChatLoad = lazy(() => import("./pages/ChatPage"));
+const ConfirmLoad = lazy(() => import("./pages/ConfirmationPage"));
+const NotFoundLoad = lazy(() => import("./pages/NotFound"));
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<Loader />}>
+              <HomeLoad />
+            </Suspense>
+          }
+        />
+        <Route
+          path="chat-page"
+          element={
+            <Suspense fallback={<Loader />}>
+              <ChatLoad />
+            </Suspense>
+          }
+        />
+        <Route
+          path="confirmation"
+          element={
+            <Suspense fallback={<Loader />}>
+              <ConfirmLoad />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<Loader />}>
+              <NotFoundLoad />
+            </Suspense>
+          }
+        />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
